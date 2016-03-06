@@ -1,7 +1,4 @@
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
-<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+<%@ include file="/WEB-INF/include.jsp" %>
 
 <div class="uk-vertical-align uk-text-center uk-height-1-1">
 	<div class="uk-vertical-align-middle">

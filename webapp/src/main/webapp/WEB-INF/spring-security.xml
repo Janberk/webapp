@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<beans:beans xmlns="http://www.springframework.org/schema/security"
-	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:s="http://www.springframework.org/schema/security" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="
  		http://www.springframework.org/schema/beans
  		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
@@ -10,65 +10,84 @@
 
 	<!-- Spring Security -->
 
-	<!-- <http> <csrf disabled="true" /> <intercept-url pattern="/welcome" access="permitAll"></intercept-url> 
-		<intercept-url pattern="/login" access="permitAll"></intercept-url> <intercept-url 
-		pattern="/registration" access="permitAll"></intercept-url> <intercept-url 
-		pattern="/**" access="hasRole('ROLE_USER')"></intercept-url> <form-login 
-		login-page="/login" default-target-url="/home" authentication-failure-url="/login?login_error=1"></form-login> 
-		<logout logout-success-url="/logout"></logout> </http> -->
+	<bean id="springSecurityFilterChain" class="org.springframework.security.web.FilterChainProxy">
+		<constructor-arg>
+			<list>
+				<s:filter-chain pattern="/**" filters="
+				
+		securityContextPersistenceFilter,
+		logoutFilter,
+		authenticationFilter,
+		exceptionTranslationFilter,
+		filterSecurityInterceptor
+		
+		" />
+			</list>
+		</constructor-arg>
 
-	<beans:bean id="springSecurityFilterChain"
-		class="org.springframework.security.web.FilterChainProxy">
-		<filter-chain-map request-matcher="ant">
+	</bean>
+	
+	
+	<!-- Security Filter Chain Filters -->
 
-			<filter-chain pattern="/**"
-				filters="
-				usernamePasswordAuthenticationFilter,
-				filterSecurityInterceptor" />
+	<bean id="securityContextPersistenceFilter"
+		class="org.springframework.security.web.context.SecurityContextPersistenceFilter" />
 
-		</filter-chain-map>
-	</beans:bean>
+	<bean id="logoutFilter"
+		class="org.springframework.security.web.authentication.logout.LogoutFilter">
+		<constructor-arg index="0" value="/logout-success" />
+		<constructor-arg>
+			<list>
+				<bean class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler" />
+			</list>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="authenticationFilter"
+		class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">
+		<property name="authenticationManager" ref="authenticationManager" />
+		<property name="filterProcessesUrl" value="/login_post" />
+	</bean>
+	
+	<bean id="exceptionTranslationFilter"
+		class="org.springframework.security.web.access.ExceptionTranslationFilter">
+		<constructor-arg name="authenticationEntryPoint" ref="authenticationEntryPoint" />
+	</bean>
 
-	<authentication-manager id="authenticationManager">
-		<authentication-provider user-service-ref="accountService">
-			<password-encoder ref="bcryptEncoder" />
-		</authentication-provider>
-	</authentication-manager>
+	<bean id="filterSecurityInterceptor" class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor">
+		<property name="authenticationManager" ref="authenticationManager" />
+		<property name="accessDecisionManager" ref="accessDecisionManager" />
+		<property name="securityMetadataSource">
+			<s:filter-security-metadata-source>
+				<s:intercept-url pattern="/home" access="hasRole('ROLE_USER')" />
+			</s:filter-security-metadata-source>
+		</property>
+	</bean>
+	
+	
+	<!-- Security Filter Chain Handlers -->
 
-	<beans:bean id="bcryptEncoder"
+	<s:authentication-manager id="authenticationManager">
+		<s:authentication-provider user-service-ref="accountService">
+			<s:password-encoder ref="bcryptEncoder" />
+		</s:authentication-provider>
+	</s:authentication-manager>
+
+	<bean id="bcryptEncoder"
 		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 
-	<beans:bean id="usernamePasswordAuthenticationFilter"
-		class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">
-		<beans:property name="authenticationManager" ref="authenticationManager" />
-		<beans:property name="authenticationSuccessHandler"
-			ref="authenticationSuccessHandler" />
-		<beans:property name="filterProcessesUrl" value="/login_post" />
-	</beans:bean>
+	<bean id="accessDecisionManager" class="org.springframework.security.access.vote.UnanimousBased">
+		<constructor-arg>
+			<list>
+				<bean class="org.springframework.security.access.vote.RoleVoter" />
+				<bean class="org.springframework.security.web.access.expression.WebExpressionVoter" />
+			</list>
+		</constructor-arg>
+	</bean>
 
-	<beans:bean id="filterSecurityInterceptor"
-		class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor">
-		<beans:property name="authenticationManager" ref="authenticationManager" />
-		<beans:property name="accessDecisionManager" ref="accessDecisionManager" />
-		<beans:property name="securityMetadataSource">
-			<filter-security-metadata-source>
-				<intercept-url pattern="/home" access="hasRole('USER')" />
-			</filter-security-metadata-source>
-		</beans:property>
-	</beans:bean>
+	<bean id="authenticationEntryPoint"
+		class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+		<constructor-arg value="/login" />
+	</bean>
 
-	<beans:bean id="accessDecisionManager"
-		class="org.springframework.security.access.vote.UnanimousBased">
-		<beans:constructor-arg>
-			<beans:list>
-				<beans:bean class="org.springframework.security.access.vote.RoleVoter" />
-				<beans:bean
-					class="org.springframework.security.web.access.expression.WebExpressionVoter" />
-			</beans:list>
-		</beans:constructor-arg>
-	</beans:bean>
-
-	<beans:bean id="authenticationSuccessHandler"
-		class="de.canberk.webapp.handler.CustomAuthenticationSuccessHandler" />
-
-</beans:beans>
+</beans>

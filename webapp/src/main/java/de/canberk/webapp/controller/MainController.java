@@ -68,4 +68,13 @@ public class MainController {
 		return modelView;
 	}
 
+	@RequestMapping(value = "/logout-success", method = RequestMethod.GET)
+	public ModelAndView logout(ModelAndView modelView) {
+
+		log.info("logout");
+
+		modelView.setViewName("logout-success");
+		return modelView;
+	}
+
 }

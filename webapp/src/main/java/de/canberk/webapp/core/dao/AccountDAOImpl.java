@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
+import de.canberk.webapp.configuration.ApplicationGrantedAuthority;
 import de.canberk.webapp.model.Account;
 
 @Primary
@@ -64,6 +65,7 @@ public class AccountDAOImpl implements AccountDAO {
 		return accounts;
 	}
 
+	@SuppressWarnings("unchecked")
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
 		log.info("loadUserByUsername");
@@ -80,7 +82,7 @@ public class AccountDAOImpl implements AccountDAO {
 		String password = account.getPassword();
 
 		List<GrantedAuthority> authorities = new ArrayList<>();
-		authorities.add(new SimpleGrantedAuthority("USER"));
+		authorities.add(new SimpleGrantedAuthority(ApplicationGrantedAuthority.ROLE_USER.name()));
 
 		UserDetails user = new User(username, password, authorities);
 
