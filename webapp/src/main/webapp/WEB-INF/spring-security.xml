@@ -59,7 +59,7 @@
 		<property name="accessDecisionManager" ref="accessDecisionManager" />
 		<property name="securityMetadataSource">
 			<s:filter-security-metadata-source>
-				<s:intercept-url pattern="/home" access="hasRole('ROLE_USER')" />
+				<s:intercept-url pattern="/myaccount" access="hasRole('ROLE_USER')" />
 			</s:filter-security-metadata-source>
 		</property>
 	</bean>
