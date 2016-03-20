@@ -24,7 +24,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 		session.setAttribute("authorities", authentication.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		httpServletResponse.setStatus(HttpServletResponse.SC_OK);
-		httpServletResponse.sendRedirect("home");
+		httpServletResponse.sendRedirect("myaccount");
 	}
 
 }

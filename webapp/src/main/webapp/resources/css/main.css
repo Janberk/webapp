@@ -1,0 +1,27 @@
+body {
+   background-color: #4e3e42;
+}
+.cd-main {
+   background-color: #f2f2f2;
+}
+.cd-navbar {
+   background-color: #220e13;
+   border: none;
+   border-radius: 0;
+   padding: 20px 0 20px 0;
+}
+.uk-navbar-nav > li > a.cd-navbar-link {
+   color: #f2f2f2;
+   font-size: 16px;
+   text-shadow: none;
+}
+.uk-navbar-nav > li.uk-open > a,
+.uk-navbar-nav > li:hover > a,
+.uk-navbar-nav > li > a:focus {
+   background-color: #4e3e42;
+}
+.cd-footer {
+   background-color: #220e13;
+   color: #f2f2f2;
+   padding: 120px;
+}

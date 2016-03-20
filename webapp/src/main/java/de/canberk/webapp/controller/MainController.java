@@ -1,13 +1,18 @@
 package de.canberk.webapp.controller;
 
+import java.util.Locale;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import de.canberk.webapp.core.service.AccountService;
@@ -30,12 +35,12 @@ public class MainController {
 		return modelView;
 	}
 
-	@RequestMapping(value = "/home", method = RequestMethod.GET)
-	public ModelAndView home(ModelAndView modelView) {
+	@RequestMapping(value = "/myaccount", method = RequestMethod.GET)
+	public ModelAndView myaccount(ModelAndView modelView) {
 
-		log.info("home");
+		log.info("myaccount");
 
-		modelView.setViewName("home");
+		modelView.setViewName("myaccount");
 		return modelView;
 	}
 
@@ -75,6 +80,13 @@ public class MainController {
 
 		modelView.setViewName("logout-success");
 		return modelView;
+	}
+
+	@RequestMapping(value = "/change-language", method = RequestMethod.GET)
+	@ResponseBody
+	public String changeLanguage(ModelAndView modelView, @RequestParam(value = "language") String language) {
+		LocaleContextHolder.setLocale(new Locale(language));
+		return language;
 	}
 
 }
