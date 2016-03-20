@@ -2,13 +2,13 @@
 
 <div class="uk-text-center uk-margin-large-top">
    <div class="uk-h1">My Account</div>
-   <a href="?language=en_US">English</a>|<a href="?language=de_DE">Deutsch</a>
-   <br> Welcome
-   <spring:message code="global.gender.male"></spring:message>
-   Demirkan
-   <br>
-   <span class="uk-h3">
-      <a href="${contextPath}/logout">log out</a>
-   </span>
-   <br> Current Locale : ${pageContext.response.locale}
+   <div class="uk-margin-top">
+      Welcome <spring:message code="global.gender.male"></spring:message> Demirkan
+   </div>	
+   <div class="uk-h3 uk-margin-top">
+      <a href="${contextPath}/logout">log out</a>   
+   </div>
+   <div class="uk-margin-top">
+      Current Locale : ${pageContext.response.locale}
+   </div>   
 </div>

@@ -4,7 +4,7 @@
 <nav class="uk-navbar cd-navbar">
    <div class="uk-container uk-container-center uk-padding-remove">
       <ul class="uk-navbar-nav uk-hidden-small">
-         <li><a class="cd-navbar-link" href="#">Home</a></li>
+         <li><a class="cd-navbar-link" href="${contextPath}/welcome">Home</a></li>
          <li class="uk-parent" data-uk-dropdown>
             <a class="cd-navbar-link" href="${contextPath}/myaccount">My Account</a>
             <div class="uk-dropdown uk-dropdown-navbar uk-dropdown-bottom">
