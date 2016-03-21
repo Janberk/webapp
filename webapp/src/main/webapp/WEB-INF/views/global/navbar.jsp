@@ -18,8 +18,8 @@
             <a class="cd-navbar-link" href="${contextPath}/myaccount">Language</a>
             <div class="uk-dropdown uk-dropdown-navbar uk-dropdown-bottom">
                <ul class="uk-nav uk-nav-navbar">
-                  <li><a href="?language=de_DE">Deutsch</a></li>
-                  <li><a href="?language=en_US">English</a></li>
+                  <li><a href="${contextPath}/change-language/de_DE">Deutsch</a></li>
+                  <li><a href="${contextPath}/change-language/en_US">English</a></li>
                </ul>
             </div>
          </li>         

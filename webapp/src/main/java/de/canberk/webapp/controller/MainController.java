@@ -2,18 +2,23 @@ package de.canberk.webapp.controller;
 
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import de.canberk.webapp.core.service.AccountService;
 import de.canberk.webapp.model.Account;
@@ -22,6 +27,12 @@ import de.canberk.webapp.model.Account;
 public class MainController {
 
 	private static final Logger log = LogManager.getLogger(MainController.class);
+
+	@Autowired
+	private HttpServletRequest request;
+
+	@Autowired
+	private HttpServletResponse response;
 
 	@Autowired
 	private AccountService service;
@@ -82,11 +93,13 @@ public class MainController {
 		return modelView;
 	}
 
-	@RequestMapping(value = "/change-language", method = RequestMethod.GET)
-	@ResponseBody
-	public String changeLanguage(ModelAndView modelView, @RequestParam(value = "language") String language) {
+	@RequestMapping(value = "/change-language/{language}", method = RequestMethod.GET)
+	public String changeLanguage(@PathVariable(value = "language") String language) {
 		LocaleContextHolder.setLocale(new Locale(language));
-		return language;
+		LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
+		localeResolver.setLocale(request, response, StringUtils.parseLocaleString(language));
+		String referer = request.getHeader("Referer");
+		return "redirect:" + referer;
 	}
 
 }
