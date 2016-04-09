@@ -8,13 +8,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Repository;
 
 import de.canberk.webapp.model.Address;
 
-@Primary
-@Repository
 public class AddressDAOImpl implements AddressDAO {
 
 	private static final Logger log = LogManager.getLogger(AddressDAOImpl.class);
