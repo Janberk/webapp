@@ -11,5 +11,6 @@
 		<property name="hibernate.format_sql">true</property>
 		
 		<mapping resource="de/canberk/webapp/entity/Account.hbm.xml" />
+		<mapping resource="de/canberk/webapp/entity/Address.hbm.xml" />
 	</session-factory>
 </hibernate-configuration>

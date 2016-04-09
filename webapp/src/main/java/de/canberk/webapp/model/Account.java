@@ -3,6 +3,7 @@ package de.canberk.webapp.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -11,7 +12,7 @@ import javax.persistence.Table;
 public class Account {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private int id;
 
 	@Column(name = "firstname", nullable = false)
@@ -20,7 +21,7 @@ public class Account {
 	@Column(name = "lastname", nullable = false)
 	private String lastName;
 
-	@Column(name = "username", nullable = false)
+	@Column(name = "username", nullable = false, unique = true)
 	private String userName;
 
 	@Column(name = "password", nullable = false)

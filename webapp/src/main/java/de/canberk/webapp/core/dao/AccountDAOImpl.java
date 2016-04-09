@@ -101,10 +101,6 @@ public class AccountDAOImpl implements AccountDAO {
 		return account;
 	}
 
-	public void setSessionFactory(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
-	}
-
 	@Override
 	public void updateAccount(Account account) {
 
@@ -113,6 +109,10 @@ public class AccountDAOImpl implements AccountDAO {
 		Session session = this.sessionFactory.getCurrentSession();
 		session.update(account);
 		log.debug("Account updated successfully, Account details: " + account.getUserName());
+	}
+
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
 	}
 
 }
