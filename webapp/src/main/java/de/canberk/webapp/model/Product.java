@@ -41,14 +41,4 @@ public class Product {
 		this.price = price;
 	}
 
-	@Override
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		sb.append(getId() + "\n");
-		sb.append(getType() + "\n");
-		sb.append(getName() + "\n");
-		sb.append(getPrice() + ",00 €");
-		return sb.toString();
-	}
-
 }

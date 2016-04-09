@@ -82,6 +82,12 @@
 	</bean>
 
 	<bean id="accountService" class="de.canberk.webapp.core.service.AccountServiceImpl" />
+	
+	<bean id="addressDao" class="de.canberk.webapp.core.dao.AddressDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="addressService" class="de.canberk.webapp.core.service.AddressServiceImpl" />	
 
 	<bean id="localeResolver"
 		class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
