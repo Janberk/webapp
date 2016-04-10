@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import de.canberk.webapp.model.Account;
+import de.canberk.webapp.model.Address;
 
 @Controller
 public class ViewController extends MainController {
@@ -25,6 +26,7 @@ public class ViewController extends MainController {
 		getLog().info("myaccount");
 
 		modelView.setViewName("myaccount");
+		modelView.addObject("address", new Address());
 		return modelView;
 	}
 

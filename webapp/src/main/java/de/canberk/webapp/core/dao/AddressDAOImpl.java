@@ -1,16 +1,22 @@
 package de.canberk.webapp.core.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.Resource;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Repository;
 
 import de.canberk.webapp.model.Address;
 
+@Primary
+@Repository
 public class AddressDAOImpl implements AddressDAO {
 
 	private static final Logger log = LogManager.getLogger(AddressDAOImpl.class);
@@ -18,13 +24,24 @@ public class AddressDAOImpl implements AddressDAO {
 	@Resource(name = "sessionFactory")
 	private SessionFactory sessionFactory;
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public void createAddress(Address address) {
+	public void createAddress(Address address, String userName) {
 
 		log.info("createAddress");
 
 		Session session = this.sessionFactory.getCurrentSession();
-		session.persist(address);
+		String hql = "select ac.id from Account ac where ac.userName=:userName";
+		Query query = session.createQuery(hql);
+		query.setParameter("userName", userName);
+
+		Optional<Integer> firstResult = query.list().stream().findFirst();
+
+		if (firstResult.isPresent()) {
+			address.setAccount(firstResult.get());
+			session.persist(address);
+		}
+
 		log.debug("Address saved successfully, Address details: " + address.getStreet() + " " + address.getZipCode());
 
 	}

@@ -6,7 +6,7 @@ import de.canberk.webapp.model.Address;
 
 public interface AddressService {
 
-	void createAddress(Address address);
+	void createAddress(Address address, String userName);
 
 	void deleteAddressById(int id);
 

@@ -2,6 +2,7 @@ package de.canberk.webapp.core.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.Resource;
 
@@ -37,6 +38,7 @@ public class AccountDAOImpl implements AccountDAO {
 
 		Session session = this.sessionFactory.getCurrentSession();
 		session.persist(account);
+
 		log.debug("Account saved successfully, Account details: " + account.getUserName());
 	}
 
@@ -74,19 +76,19 @@ public class AccountDAOImpl implements AccountDAO {
 		String hql = "FROM Account a WHERE a.userName = :username";
 		Query query = session.createQuery(hql);
 		query.setParameter("username", username);
-		List<Account> results = query.list();
 
-		int id = results.get(0).getId();
-		Account account = (Account) session.load(Account.class, new Integer(id));
+		Optional<Account> firstResult = query.list().stream().findFirst();
 
-		String password = account.getPassword();
+		if (!firstResult.isPresent()) {
+			throw new UsernameNotFoundException("User " + username + " not found.");
+		} else {
+			Account account = firstResult.get();
+			String password = account.getPassword();
+			List<GrantedAuthority> authorities = new ArrayList<>();
+			authorities.add(new SimpleGrantedAuthority(ApplicationGrantedAuthority.ROLE_USER.name()));
+			return new User(username, password, authorities);
+		}
 
-		List<GrantedAuthority> authorities = new ArrayList<>();
-		authorities.add(new SimpleGrantedAuthority(ApplicationGrantedAuthority.ROLE_USER.name()));
-
-		UserDetails user = new User(username, password, authorities);
-
-		return user;
 	}
 
 	@Override

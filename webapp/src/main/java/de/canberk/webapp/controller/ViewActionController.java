@@ -3,6 +3,8 @@ package de.canberk.webapp.controller;
 import java.util.Locale;
 
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
@@ -24,20 +26,23 @@ public class ViewActionController extends MainController {
 	public ModelAndView submitRegistration(@ModelAttribute("account") Account account, BindingResult result) {
 
 		getLog().info("submitRegistration");
-
 		getAccountService().createAccount(account);
+		return new ModelAndView("redirect:/welcome");
+	}
 
-		Address address = new Address();
-		address.setAccount(account.getId());
-		address.setFirstName("Canberk");
-		address.setLastName("Demirkan");
-		address.setStreet("Schmiljanstr. 26");
-		address.setZipCode("12161");
-		address.setCity("Berlin");
-		address.setCountry("Germany");
+	@RequestMapping(value = "/save-address", method = RequestMethod.POST)
+	public ModelAndView saveAddress(@ModelAttribute("address") Address address, BindingResult result) {
 
-		getAddressService().createAddress(address);
+		getLog().info("saveAddress");
 
+		if (result.hasErrors()) {
+			getLog().info("Address form has errors!");
+		}
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String userName = authentication.getName();
+
+		getAddressService().createAddress(address, userName);
 		return new ModelAndView("redirect:/welcome");
 	}
 

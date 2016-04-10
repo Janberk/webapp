@@ -76,6 +76,8 @@
 		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
 
 	<bean id="accountDao" class="de.canberk.webapp.core.dao.AccountDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
