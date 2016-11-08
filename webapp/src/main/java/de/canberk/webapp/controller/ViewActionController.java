@@ -2,6 +2,7 @@ package de.canberk.webapp.controller;
 
 import java.util.Locale;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.RequestContextUtils;
@@ -20,6 +22,7 @@ import de.canberk.webapp.model.Account;
 import de.canberk.webapp.model.Address;
 
 @Controller
+@Scope(value = WebApplicationContext.SCOPE_REQUEST)
 public class ViewActionController extends MainController {
 
 	@RequestMapping(value = "/submit-registration", method = RequestMethod.POST)

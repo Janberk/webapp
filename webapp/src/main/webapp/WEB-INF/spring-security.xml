@@ -29,9 +29,10 @@
 	
 	
 	<!-- Security Filter Chain Filters -->
-
-	<bean id="securityContextPersistenceFilter"
-		class="org.springframework.security.web.context.SecurityContextPersistenceFilter" />
+	
+	<bean id="securityContextPersistenceFilter" class="org.springframework.security.web.context.SecurityContextPersistenceFilter" >
+		<property name="forceEagerSessionCreation" value="true" />
+	</bean>
 
 	<bean id="logoutFilter"
 		class="org.springframework.security.web.authentication.logout.LogoutFilter">
@@ -48,6 +49,7 @@
 		<property name="authenticationManager" ref="authenticationManager" />
 		<property name="filterProcessesUrl" value="/login_post" />
 		<property name="authenticationFailureHandler" ref="authenticationFailureHandler" />
+		<property name="authenticationSuccessHandler" ref="authenticationSuccessHandler" />
 	</bean>
 	
 	<bean id="exceptionTranslationFilter"
@@ -95,5 +97,8 @@
 		class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
 		<property name="defaultFailureUrl" value="/login" />
 	</bean>
+
+	<bean id="authenticationSuccessHandler"
+		class="de.canberk.webapp.handler.InitSessionAuthenticationSuccessHandler" />
 
 </beans>

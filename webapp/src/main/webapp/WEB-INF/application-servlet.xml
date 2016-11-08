@@ -2,8 +2,11 @@
 
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:beans="http://www.springframework.org/schema/beans"
-	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="
  http://www.springframework.org/schema/beans
  http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
@@ -12,15 +15,15 @@
  http://www.springframework.org/schema/tx
  http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
  http://www.springframework.org/schema/mvc
- http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+ http://www.springframework.org/schema/mvc/spring-mvc.xsd
+ http://www.springframework.org/schema/aop
+ http://www.springframework.org/schema/aop/spring-aop.xsd">
 
 	<!-- Application Properties -->
 	<context:property-placeholder location="classpath:application.properties" />
 
 	<context:component-scan base-package="com.frameworkonly.tilesapp" />
-	<context:component-scan base-package="de.canberk.webapp.controller" />
-	<context:component-scan base-package="de.canberk.webapp.core.service" />
-	<context:component-scan base-package="de.canberk.webapp.core.dao" />
+	<context:component-scan base-package="de.canberk.webapp" />
 
 	<tx:annotation-driven />
 	<mvc:annotation-driven />
@@ -89,7 +92,7 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-	<bean id="addressService" class="de.canberk.webapp.core.service.AddressServiceImpl" />	
+	<bean id="addressService" class="de.canberk.webapp.core.service.AddressServiceImpl" />
 
 	<bean id="localeResolver"
 		class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
